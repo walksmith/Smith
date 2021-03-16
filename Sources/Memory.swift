@@ -131,6 +131,7 @@ public final class Memory {
             .removeDuplicates {
                 $1 <= $0
             }
+            .receive(on: queue)
             .sink {
                 FileManager.archive = $0
             }

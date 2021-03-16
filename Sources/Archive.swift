@@ -31,7 +31,29 @@ public struct Archive: Comparable, Archivable {
         }
     }
     
+    public mutating func start() {
+        walks.append(.init())
+        save()
+    }
+    
+    public mutating func end() {
+        
+    }
+    
+    public mutating func start(_ challenge: Challenge) {
+        
+    }
+    
+    public mutating func stop(_ challenge: Challenge) {
+        
+    }
+    
     public static func < (lhs: Archive, rhs: Archive) -> Bool {
         lhs.date < rhs.date
+    }
+    
+    private mutating func save() {
+        date = .init()
+        Memory.shared.save.send(self)
     }
 }
