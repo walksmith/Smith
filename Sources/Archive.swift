@@ -42,9 +42,9 @@ public struct Archive: Comparable, Archivable {
         save()
     }
     
-    public mutating func end() {
+    public mutating func end(steps: Int = 0, meters: Int = 0, tiles: Int = 0) {
         walks = walks.mutating(index: walks.count - 1) {
-            $0.end
+            $0.end(steps: steps, meters: meters, tiles: tiles)
         }
         save()
     }

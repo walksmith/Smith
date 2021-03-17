@@ -4,21 +4,21 @@ import XCTest
 final class WalkTests: XCTestCase {
     func testEnd() {
         XCTAssertEqual(100,
-                       Int(Walk(start: .init(timeIntervalSinceNow: -100), end: .init(timeIntervalSinceNow: -100))
-                            .end
+                       Int(Walk(date: .init(timeIntervalSinceNow: -100))
+                            .end(steps: 0, meters: 0, tiles: 0)
                             .duration))
     }
     
     func testEndAfter9Hours() {
         let start = Calendar.current.date(byAdding: .hour, value: -(Constants.walk.duration.max + 1), to: .init())!
         XCTAssertEqual(Int(start.timeIntervalSince(Calendar.current.date(byAdding: .hour, value: -Constants.walk.duration.fallback, to: start)!)),
-                       Int(Walk(start: start, end: start)
-                            .end
+                       Int(Walk(date: start)
+                            .end(steps: 0, meters: 0, tiles: 0)
                             .duration))
     }
     
     func testActive() {
         XCTAssertTrue(Walk().active)
-        XCTAssertFalse(Walk(start: .init(timeIntervalSinceNow: -1), end: .init()).active)
+        XCTAssertFalse(Walk(date: .init(timeIntervalSinceNow: -1), duration: 1).active)
     }
 }

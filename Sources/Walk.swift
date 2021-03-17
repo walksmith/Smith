@@ -12,38 +12,44 @@ struct Walk: Equatable, Archivable {
         duration == 0
     }
     
-    var end: Self {
-        .init(start: date, end: Calendar.current.dateComponents([.hour], from: date, to: .init()).hour! > Constants.walk.duration.max
-                ? Calendar.current.date(byAdding: .hour, value: Constants.walk.duration.fallback, to: date)! : .init())
-    }
-    
     var data: Data {
         Data()
             .adding(date.timestamp)
             .adding(UInt16(duration))
+            .adding(UInt16(steps))
+            .adding(UInt16(meters))
+            .adding(UInt32(tiles))
     }
     
     init() {
-        date = .init()
-        duration = 0
-        steps = 0
-        meters = 0
-        tiles = 0
+        self.init(date: .init())
     }
     
     init(data: inout Data) {
         date = .init(timestamp: data.uInt32())
         duration = .init(data.uInt16())
-        steps = 0
-        meters = 0
-        tiles = 0
+        steps = .init(data.uInt16())
+        meters = .init(data.uInt16())
+        tiles = .init(data.uInt32())
     }
     
-    init(start: Date, end: Date) {
-        date = start
-        duration = end.timeIntervalSince1970 - start.timeIntervalSince1970
-        steps = 0
-        meters = 0
-        tiles = 0
+    init(date: Date, duration: TimeInterval = 0, steps: Int = 0, meters: Int = 0, tiles: Int = 0) {
+        self.date = date
+        self.duration = duration
+        self.steps = steps
+        self.meters = meters
+        self.tiles = tiles
+    }
+    
+    func end(steps: Int, meters: Int, tiles: Int) -> Self {
+        .init(
+            date: date,
+            duration: {
+                $0.timeIntervalSince(date)
+            } (Calendar.current.dateComponents([.hour], from: date, to: .init()).hour! > Constants.walk.duration.max
+                ? Calendar.current.date(byAdding: .hour, value: Constants.walk.duration.fallback, to: date)! : .init()),
+            steps: steps,
+            meters: meters,
+            tiles: tiles)
     }
 }

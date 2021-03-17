@@ -27,4 +27,8 @@ final class MapTests: XCTestCase {
         let total = (Int(abs(pointStart.x - pointEnd.x)) + 1) * (Int(abs(pointStart.y - pointEnd.y)) + 1)
         XCTAssertLessThan(total, 2_147_483_647)
     }
+    
+    func testTileIndexWithinUInt32() {
+        XCTAssertLessThan(pow(4, Constants.map.zoom / 2), 2_147_483_647)
+    }
 }
