@@ -2,9 +2,15 @@ import Foundation
 import Archivable
 
 public struct Archive: Comparable, Archivable {
-    public internal(set) var walks: [Walk]
+    var walks: [Walk]
     var challenges: Set<Challenge>
     var date: Date
+    
+    public var state: State {
+        walks.last.flatMap {
+            $0.active ? .walking(-$0.date.timeIntervalSinceNow) : nil
+        } ?? .none
+    }
     
     public var data: Data {
         Data()

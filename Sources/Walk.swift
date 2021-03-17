@@ -1,26 +1,31 @@
 import Foundation
 import Archivable
 
-public struct Walk: Equatable, Archivable {
-    public let date: Date
-    public let duration: TimeInterval
+struct Walk: Equatable, Archivable {
+    let date: Date
+    let duration: TimeInterval
     
-    public var data: Data {
+    var active: Bool {
+        duration == 0
+    }
+    
+    var end: Self {
+        .init(start: date, end: Calendar.current.dateComponents([.hour], from: date, to: .init()).hour! > 9
+                ? Calendar.current.date(byAdding: .hour, value: 1, to: date)! : .init())
+    }
+    
+    var data: Data {
         Data()
             .adding(date.timestamp)
             .adding(UInt16(duration))
     }
     
-    public var end: Self {
-        .init(start: date, end: .init())
-    }
-    
-    public init() {
+    init() {
         date = .init()
         duration = 0
     }
     
-    public init(data: inout Data) {
+    init(data: inout Data) {
         date = .init(timestamp: data.uInt32())
         duration = .init(data.uInt16())
     }

@@ -95,4 +95,23 @@ final class ArchiveTests: XCTestCase {
         archive.stop(.map)
         waitForExpectations(timeout: 1)
     }
+    
+    func testWalking() throws {
+        if case .none = archive.state {
+            archive.start()
+            if case let .walking(time) = archive.state {
+                XCTAssertGreaterThan(time, 0)
+                archive.end()
+                if case .none = archive.state {
+                    
+                } else {
+                    XCTFail()
+                }
+            } else {
+                XCTFail()
+            }
+        } else {
+            XCTFail()
+        }
+    }
 }
