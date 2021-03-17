@@ -37,7 +37,10 @@ public struct Archive: Comparable, Archivable {
     }
     
     public mutating func end() {
-        
+        walks = walks.mutating(index: walks.count - 1) {
+            $0.end
+        }
+        save()
     }
     
     public mutating func start(_ challenge: Challenge) {

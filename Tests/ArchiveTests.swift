@@ -47,4 +47,21 @@ final class ArchiveTests: XCTestCase {
         archive.start()
         waitForExpectations(timeout: 1)
     }
+    
+    func testEnd() {
+        let expect = expectation(description: "")
+        archive.date = .distantPast
+        archive.walks = [.init(start: .init(timeIntervalSinceNow: -10), end: .init(timeIntervalSinceNow: -10))]
+        let date = Date()
+        Memory.shared.save.sink {
+            XCTAssertEqual(1, $0.walks.count)
+            XCTAssertEqual(10, Int($0.walks.first!.duration))
+            XCTAssertEqual(Date(timeIntervalSinceNow: -10).timestamp, $0.walks.first!.date.timestamp)
+            XCTAssertGreaterThanOrEqual($0.date.timestamp, date.timestamp)
+            expect.fulfill()
+        }
+        .store(in: &subs)
+        archive.end()
+        waitForExpectations(timeout: 1)
+    }
 }
