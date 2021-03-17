@@ -102,12 +102,12 @@ final class ArchiveTests: XCTestCase {
     }
     
     func testWalking() throws {
-        if case .none = archive.state {
+        if case .none = archive.status {
             archive.start()
-            if case let .walking(time) = archive.state {
+            if case let .walking(time) = archive.status {
                 XCTAssertGreaterThan(time, 0)
                 archive.end()
-                if case .none = archive.state {
+                if case .none = archive.status {
                     
                 } else {
                     XCTFail()

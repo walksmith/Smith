@@ -6,7 +6,7 @@ public struct Archive: Comparable, Archivable {
     var challenges: Set<Challenge>
     var date: Date
     
-    public var state: State {
+    public var status: Status {
         walks.last.flatMap {
             $0.active ? .walking(-$0.date.timeIntervalSinceNow) : nil
         } ?? .none

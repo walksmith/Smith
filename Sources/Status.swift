@@ -1,6 +1,6 @@
 import Foundation
 
-public enum State {
+public enum Status {
     case
     none,
     walking(TimeInterval)
