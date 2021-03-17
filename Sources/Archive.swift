@@ -38,11 +38,18 @@ public struct Archive: Comparable, Archivable {
     }
     
     public mutating func start() {
+        guard case .none = status else { return }
+        
         walks.append(.init())
         save()
     }
     
     public mutating func end(steps: Int = 0, meters: Int = 0, tiles: Int = 0) {
+        guard
+            case let .walking(duration) = status,
+            duration > 0
+        else { return }
+        
         walks = walks.mutating(index: walks.count - 1) {
             $0.end(steps: steps, meters: meters, tiles: tiles)
         }
