@@ -64,4 +64,35 @@ final class ArchiveTests: XCTestCase {
         archive.end()
         waitForExpectations(timeout: 1)
     }
+    
+    func testStartChallenge() {
+        let expect = expectation(description: "")
+        archive.date = .distantPast
+        let date = Date()
+        Memory.shared.save.sink {
+            XCTAssertTrue($0.enrolled(.map))
+            XCTAssertGreaterThanOrEqual($0.date.timestamp, date.timestamp)
+            expect.fulfill()
+        }
+        .store(in: &subs)
+        XCTAssertFalse(archive.enrolled(.map))
+        archive.start(.map)
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testStopChallenge() {
+        let expect = expectation(description: "")
+        archive.date = .distantPast
+        let date = Date()
+        archive.start(.map)
+        Memory.shared.save.sink {
+            XCTAssertFalse($0.enrolled(.map))
+            XCTAssertGreaterThanOrEqual($0.date.timestamp, date.timestamp)
+            expect.fulfill()
+        }
+        .store(in: &subs)
+        XCTAssertTrue(archive.enrolled(.map))
+        archive.stop(.map)
+        waitForExpectations(timeout: 1)
+    }
 }

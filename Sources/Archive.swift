@@ -2,8 +2,8 @@ import Foundation
 import Archivable
 
 public struct Archive: Comparable, Archivable {
-    public internal(set) var challenges: Set<Challenge>
     public internal(set) var walks: [Walk]
+    var challenges: Set<Challenge>
     var date: Date
     
     public var data: Data {
@@ -44,11 +44,17 @@ public struct Archive: Comparable, Archivable {
     }
     
     public mutating func start(_ challenge: Challenge) {
-        
+        challenges.insert(challenge)
+        save()
     }
     
     public mutating func stop(_ challenge: Challenge) {
-        
+        challenges.remove(challenge)
+        save()
+    }
+    
+    public func enrolled(_ challenge: Challenge) -> Bool {
+        challenges.contains(challenge)
     }
     
     public static func < (lhs: Archive, rhs: Archive) -> Bool {
