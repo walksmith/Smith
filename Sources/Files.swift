@@ -2,9 +2,9 @@ import Foundation
 
 extension FileManager {
     #if DEBUG
-        static let url = root.appendingPathComponent("walksmith.debug.archive")
+        static let url = make(url: "walksmith.debug.archive")
     #else
-        static let url = root.appendingPathComponent("walksmith.archive")
+        static let url = make(url: "walksmith.archive")
     #endif
     
     static var archive: Archive? {
@@ -16,5 +16,11 @@ extension FileManager {
         }
     }
     
-    private static let root = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    private static func make(url: String) -> URL {
+        var url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(url)
+        var resources = URLResourceValues()
+        resources.isExcludedFromBackup = true
+        try? url.setResourceValues(resources)
+        return url
+    }
 }
