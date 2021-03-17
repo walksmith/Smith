@@ -10,8 +10,8 @@ final class WalkTests: XCTestCase {
     }
     
     func testEndAfter9Hours() {
-        let start = Calendar.current.date(byAdding: .hour, value: -10, to: .init())!
-        XCTAssertEqual(Int(start.timeIntervalSince(Calendar.current.date(byAdding: .hour, value: -1, to: start)!)),
+        let start = Calendar.current.date(byAdding: .hour, value: -(Constants.walk.duration.max + 1), to: .init())!
+        XCTAssertEqual(Int(start.timeIntervalSince(Calendar.current.date(byAdding: .hour, value: -Constants.walk.duration.fallback, to: start)!)),
                        Int(Walk(start: start, end: start)
                             .end
                             .duration))
