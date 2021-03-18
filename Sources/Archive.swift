@@ -44,6 +44,13 @@ public struct Archive: Comparable, Archivable {
         save()
     }
     
+    public mutating func cancel() {
+        guard case .walking = status else { return }
+        
+        walks.removeLast()
+        save()
+    }
+    
     public mutating func end(steps: Int = 0, meters: Int = 0, tiles: Int = 0) {
         guard
             case let .walking(duration) = status,
