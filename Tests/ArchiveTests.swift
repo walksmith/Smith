@@ -140,4 +140,24 @@ final class ArchiveTests: XCTestCase {
         archive.walks = [.init(date: .init(timeIntervalSinceNow: -500), duration: 300)]
         XCTAssertEqual(Date(timeIntervalSinceNow: -200).timestamp, archive.last?.timestamp)
     }
+    
+    func testList() {
+        let date0 = Date(timeIntervalSinceNow: -1000)
+        let date1 = Date(timeIntervalSinceNow: -800)
+        let date2 = Date(timeIntervalSinceNow: -200)
+        archive.walks = [
+            .init(date: date0, duration: 100),
+            .init(date: date1, duration: 500),
+            .init(date: date2, duration: 50)]
+        let list = archive.list
+        XCTAssertEqual(date2, list[0].date)
+        XCTAssertEqual(50, list[0].duration)
+        XCTAssertEqual(0.1, list[0].percent)
+        XCTAssertEqual(date1, list[1].date)
+        XCTAssertEqual(500, list[1].duration)
+        XCTAssertEqual(1, list[1].percent)
+        XCTAssertEqual(date0, list[2].date)
+        XCTAssertEqual(100, list[2].duration)
+        XCTAssertEqual(0.2, list[2].percent)
+    }
 }

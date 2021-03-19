@@ -18,6 +18,20 @@ public struct Archive: Comparable, Archivable {
         }
     }
     
+    public var list: [Walk.Listed] {
+        walks
+            .map(\.duration)
+            .filter {
+                $0 > 0
+            }
+            .max()
+            .map { duration in
+                walks.map {
+                    .init(date: $0.date, duration: $0.duration, percent: $0.duration / duration)
+                }
+            }?.reversed() ?? []
+    }
+    
     public var data: Data {
         Data()
             .adding(date.timestamp)

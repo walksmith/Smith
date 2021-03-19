@@ -1,7 +1,7 @@
 import Foundation
 import Archivable
 
-struct Walk: Equatable, Archivable {
+public struct Walk: Equatable, Archivable {
     let date: Date
     let duration: TimeInterval
     let steps: Int
@@ -12,7 +12,7 @@ struct Walk: Equatable, Archivable {
         duration == 0
     }
     
-    var data: Data {
+    public var data: Data {
         Data()
             .adding(date.timestamp)
             .adding(UInt16(duration))
@@ -25,7 +25,7 @@ struct Walk: Equatable, Archivable {
         self.init(date: .init())
     }
     
-    init(data: inout Data) {
+    public init(data: inout Data) {
         date = .init(timestamp: data.uInt32())
         duration = .init(data.uInt16())
         steps = .init(data.uInt16())
