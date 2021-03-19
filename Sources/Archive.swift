@@ -26,72 +26,35 @@ public struct Archive: Comparable, Archivable {
     
     public var calendar: [Year] {
         walks.map(\.date).first.map {
-            ($0, Date(), Calendar.current)
-        }.map { (start, now, calendar) in
-            (calendar.component(.year, from: start) ... calendar.component(.year, from: now))
-                .map {
-                    ($0, calendar.dateInterval(of: .year, for: calendar.date(from: .init(year: $0))!)!)
-                }
-                .map { (year, interval) in
-                    (calendar.component(.month, from: interval.start) ... calendar.component(.month, from: calendar.date(byAdding: .day, value: -1, to: interval.end)!))
-                        .map {
-                            ($0, calendar.dateInterval(of: .month, for: calendar.date(from: .init(month: $0))!)!)
-                        }
-                        .map { (month, interval) in
-                            (calendar.component(.day, from: interval.start) ... calendar.component(.day, from: calendar.date(byAdding: .day, value: -1, to: interval.end)!))
-                                .reduce(into: [Year(value: year, months: [.init(value: month, days: [])])]) { result, day in
-                                    if result.last!.value != year {
-                                        result.append(Year(value: year, months: [.init(value: month, days: [[]])]))
-                                    }
-                                    if result.last!.months.last!.value != month {
-                                        result = result.last {
-                                            $0.with(.init(value: month, days: [[]]))
-                                        }
-                                    }
-                                    
-                                    if calendar.component(.weekday, from: calendar.date(from: .init(year: year, month: month, day: day))!) == 7 {
-                                        result = result.last {
-                                            $0.months = $0.months.last {
-                                                $0.week
-                                            }
-                                        }
-                                    }
-                                }
-                        }
-                }
+            (DateInterval(start: $0, end: .init()), Calendar.current)
         }
-        
-        return []
-        
-        
-        
-        //        selected = calendar.dateComponents([.year, .month, .day], from: date)
-        //        year.stringValue = yearer.string(from: date)
-        //        month.stringValue = monther.string(from: date)
-        //        contentView!.subviews.filter { $0 is Day }.forEach { $0.removeFromSuperview() }
-        //
-        //        let span = calendar.dateInterval(of: .month, for: date)!
-        //        let start = calendar.dateComponents([.weekday, .day], from: span.start)
-        //        var weekday = start.weekday!
-        //        var top = CGFloat(70)
-        //        var left = ((.init(weekday) - 0.5) * column) + margin
-        //        (start.day! ... calendar.component(.day, from: calendar.date(byAdding: .day, value: -1, to: span.end)!)).forEach {
-        //            let day = Day($0, self)
-        //            day.selected = $0 == selected.day!
-        //            contentView!.addSubview(day)
-        //
-        //            day.topAnchor.constraint(equalTo: month.bottomAnchor, constant: top).isActive = true
-        //            day.centerXAnchor.constraint(equalTo: contentView!.leftAnchor, constant: left).isActive = true
-        //
-        //            if weekday == 7 {
-        //                weekday = 1
-        //                top += column
-        //                left = (0.5 * column) + margin
-        //            } else {
-        //                weekday += 1
-        //                left += column
-        //            }
-        //        }
+        .map { (interval, calendar) in
+            (calendar.component(.year, from: interval.start) ... calendar.component(.year, from: interval.end))
+            .map {
+                ($0, calendar.dateInterval(of: .year, for: calendar.date(from: .init(year: $0))!)!.intersection(with: interval)!)
+            }
+            .map { (year, interval) in
+                .init(value: year, months:
+                        (calendar.component(.month, from: interval.start) ... calendar.component(.month, from: calendar.date(byAdding: .day, value: -1, to: interval.end)!))
+                .map {
+                    ($0, calendar.dateInterval(of: .month, for: calendar.date(from: .init(year: year, month: $0))!)!)
+                }
+                .map { (month, interval) in
+                    .init(value: month, days: (calendar.component(.weekOfMonth, from: interval.start) ... calendar.component(.weekOfMonth, from: calendar.date(byAdding: .day, value: -1, to: interval.end)!))
+                    .map {
+                        ($0, calendar.dateInterval(of: .weekOfMonth,
+                                                   for: calendar.date(from: .init(year: year, month: month, weekday: 1, weekOfMonth: $0))!)!.intersection(with: interval)!)
+                    }
+                    .map { (week, interval) in
+                        (calendar.component(.day, from: interval.start) ... calendar.component(.day, from: calendar.date(byAdding: .day, value: -1, to: interval.end)!))
+                            .map {
+                                .init(value: $0, hit: false)
+                            }
+                    })
+                })
+            }
+
+            } ?? []
     }
     
     public var list: [Walk.Listed] {

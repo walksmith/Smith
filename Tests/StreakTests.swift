@@ -59,7 +59,7 @@ final class StreakTests: XCTestCase {
             .init(date: saturday, duration: 1)]
         
         XCTAssertEqual([
-                        Year(value: 2020,
+                        Year(value: 2021,
                              months: [
                                 .init(value: 3, days: [
                                     [.init(value: 1, hit: false),
@@ -93,5 +93,7 @@ final class StreakTests: XCTestCase {
                                      .init(value: 29, hit: false),
                                      .init(value: 30, hit: false)]
                                 ])])], archive.calendar)
+        
+        debugPrint(archive.calendar)
     }
 }
