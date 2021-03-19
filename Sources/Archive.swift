@@ -12,6 +12,12 @@ public struct Archive: Comparable, Archivable {
         } ?? .none
     }
     
+    public var last: Date? {
+        walks.last.map {
+            $0.date.addingTimeInterval($0.duration)
+        }
+    }
+    
     public var data: Data {
         Data()
             .adding(date.timestamp)

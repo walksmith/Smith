@@ -134,4 +134,10 @@ final class ArchiveTests: XCTestCase {
             XCTFail()
         }
     }
+    
+    func testLast() {
+        XCTAssertNil(archive.last)
+        archive.walks = [.init(date: .init(timeIntervalSinceNow: -500), duration: 300)]
+        XCTAssertEqual(Date(timeIntervalSinceNow: -200).timestamp, archive.last?.timestamp)
+    }
 }
