@@ -2,8 +2,8 @@ import Foundation
 
 extension Walk {
     public struct Listed: Hashable {
-        let date: Date
-        let duration: TimeInterval
-        let percent: Double
+        public let date: Date
+        public let duration: TimeInterval
+        public let percent: Double
     }
 }
