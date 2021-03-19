@@ -18,6 +18,12 @@ public struct Archive: Comparable, Archivable {
         }
     }
     
+    public var streak: Streak {
+        walks.reduce((Streak.zero, walks.first!.date)) {
+            (Calendar.current.isDate($0.1, inSameDayAs: $1.date) ? $0.0.hit : $0.0.miss.hit, $1.date)
+        }.0
+    }
+    
     public var list: [Walk.Listed] {
         walks
             .map(\.duration)
