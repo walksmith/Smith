@@ -24,6 +24,10 @@ public struct Archive: Comparable, Archivable {
         }.0
     }
     
+    public var calendar: [Year] {
+        []
+    }
+    
     public var list: [Walk.Listed] {
         walks
             .map(\.duration)
