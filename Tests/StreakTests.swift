@@ -39,7 +39,7 @@ final class StreakTests: XCTestCase {
         XCTAssertEqual(2, archive.streak.maximum)
         XCTAssertEqual(0, archive.streak.current)
         
-        archive.walks.append(.init(date: .init(), duration: 1))
+        archive.walks.append(.init(date: Calendar.current.date(byAdding: .hour, value: -1, to: .init())!, duration: 1))
         
         XCTAssertEqual(2, archive.streak.maximum)
         XCTAssertEqual(1, archive.streak.current)

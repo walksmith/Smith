@@ -19,9 +19,17 @@ public struct Archive: Comparable, Archivable {
     }
     
     public var streak: Streak {
-        walks.reduce((Streak.zero, walks.first?.date ?? .distantPast)) {
-            (Calendar.current.isDate($0.1, inSameDayAs: $1.date) ? $0.0.hit : $0.0.miss.hit, $1.date)
-        }.0
+        guard !walks.isEmpty else { return .zero }
+        
+        var hits = calendar.flatMap(\.months).flatMap(\.days).flatMap { $0 }.map(\.hit)
+        hits.removeLast(Calendar.current.component(.day,
+                                                   from: Calendar.current.date(
+                                                    byAdding: .day, value: -1,
+                                                    to: Calendar.current.dateInterval(of: .month, for: .init())!.end)!)
+                               - Calendar.current.component(.day, from: .init()))
+        return hits.reduce(Streak.zero) {
+            $1 ? $0.hit : $0.miss
+        }
     }
     
     public var calendar: [Year] {
