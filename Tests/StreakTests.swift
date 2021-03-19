@@ -10,6 +10,10 @@ final class StreakTests: XCTestCase {
         Memory.shared.subs = .init()
     }
     
+    func testEmpty() {
+        XCTAssertNotNil(archive.streak)
+    }
+    
     func testStreak() {
         let daysAgo12 = Calendar.current.date(byAdding: .day, value: -12, to: .init())!
         let daysAgo8 = Calendar.current.date(byAdding: .day, value: -8, to: .init())!
@@ -42,10 +46,10 @@ final class StreakTests: XCTestCase {
     }
     
     func testCalendar() {
-        let monday = Calendar.current.date(from: .init(year: 2020, month: 2, day: 15))!
-        let wednesday = Calendar.current.date(from: .init(year: 2020, month: 2, day: 17))!
-        let thursday = Calendar.current.date(from: .init(year: 2020, month: 2, day: 18))!
-        let saturday = Calendar.current.date(from: .init(year: 2020, month: 2, day: 20))!
+        let monday = Calendar.current.date(from: .init(year: 2021, month: 3, day: 15))!
+        let wednesday = Calendar.current.date(from: .init(year: 2021, month: 3, day: 17))!
+        let thursday = Calendar.current.date(from: .init(year: 2021, month: 3, day: 18))!
+        let saturday = Calendar.current.date(from: .init(year: 2021, month: 3, day: 20))!
         
         archive.walks = [
             .init(date: monday, duration: 1),
@@ -57,7 +61,7 @@ final class StreakTests: XCTestCase {
         XCTAssertEqual([
                         Year(value: 2020,
                              months: [
-                                .init(value: 2, days: [
+                                .init(value: 3, days: [
                                     [.init(value: 1, hit: false),
                                      .init(value: 2, hit: false),
                                      .init(value: 3, hit: false),
