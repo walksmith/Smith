@@ -25,7 +25,8 @@ public struct Archive: Comparable, Archivable {
     }
     
     public var calendar: [Year] {
-        walks.map(\.date).first.map {
+        var dates = walks.map(\.date)
+        return dates.first.map {
             (DateInterval(start: $0, end: .init()), Calendar.current)
         }
         .map { (interval, calendar) in
@@ -47,14 +48,18 @@ public struct Archive: Comparable, Archivable {
                     }
                     .map { (week, interval) in
                         (calendar.component(.day, from: interval.start) ... calendar.component(.day, from: calendar.date(byAdding: .day, value: -1, to: interval.end)!))
-                            .map {
-                                .init(value: $0, hit: false)
+                            .map { day in
+                                .init(value: day, hit: {
+                                    while(!dates.isEmpty && $0 > dates.first!) {
+                                        dates.removeFirst()
+                                    }
+                                    return !dates.isEmpty && calendar.isDate(dates.first!, inSameDayAs: $0)
+                                } (calendar.date(from: .init(year: year, month: month, day: day))!))
                             }
                     })
                 })
             }
-
-            } ?? []
+        } ?? []
     }
     
     public var list: [Walk.Listed] {
