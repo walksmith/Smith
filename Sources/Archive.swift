@@ -25,37 +25,11 @@ public struct Archive: Comparable, Archivable {
     }
     
     public var calendar: [Year] {
-        var dates = walks.map(\.date)
-        return dates.first.map {
-            (DateInterval(start: $0, end: .init()), Calendar.current)
-        }
-        .map { (interval, calendar) in
-            (calendar.component(.year, from: interval.start) ... calendar.component(.year, from: interval.end))
-            .map {
-                ($0, calendar.dateInterval(of: .year, for: calendar.date(from: .init(year: $0))!)!.intersection(with: interval)!)
-            }
-            .map { (year, interval) in
-                .init(value: year, months:
-                        (calendar.component(.month, from: interval.start) ... calendar.component(.month, from: calendar.date(byAdding: .day, value: -1, to: interval.end)!))
-                .map {
-                    ($0, calendar.dateInterval(of: .month, for: calendar.date(from: .init(year: year, month: $0))!)!)
-                }
-                .map { (month, interval) in
-                    .init(value: month, days: (calendar.component(.weekOfMonth, from: interval.start) ... calendar.component(.weekOfMonth, from: calendar.date(byAdding: .day, value: -1, to: interval.end)!))
-                    .map {
-                        ($0, calendar.dateInterval(of: .weekOfMonth,
-                                                   for: calendar.date(from: .init(year: year, month: month, weekday: 1, weekOfMonth: $0))!)!.intersection(with: interval)!)
-                    }
-                    .map { (week, interval) in
-                        (calendar.component(.day, from: interval.start) ... calendar.component(.day, from: calendar.date(byAdding: .day, value: -1, to: interval.end)!))
-                            .map { day in
-                                .init(value: day, hit: {
-                                    while(!dates.isEmpty && $0 > dates.first!) {
-                                        dates.removeFirst()
-                                    }
-                                    return !dates.isEmpty && calendar.isDate(dates.first!, inSameDayAs: $0)
-                                } (calendar.date(from: .init(year: year, month: month, day: day))!))
-                            }
+        walks.dates { dates, interval in
+            interval.years { year, interval in
+                .init(value: year, months: interval.months(year: year) { month, interval in
+                    .init(value: month, days: interval.days(year: year, month: month) { day, date in
+                        .init(value: day, hit: dates.hits(date))
                     })
                 })
             }

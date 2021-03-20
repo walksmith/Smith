@@ -12,6 +12,7 @@ final class StreakTests: XCTestCase {
     
     func testEmpty() {
         XCTAssertNotNil(archive.streak)
+        XCTAssertNotNil(archive.calendar)
     }
     
     func testStreak() {
