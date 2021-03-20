@@ -12,9 +12,9 @@ public struct Archive: Comparable, Archivable {
         } ?? .none
     }
     
-    public var last: Date? {
+    public var last: DateInterval? {
         walks.last.map {
-            $0.date.addingTimeInterval($0.duration)
+            DateInterval(start: $0.date, duration: $0.duration)
         }
     }
     
