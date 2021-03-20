@@ -1,7 +1,7 @@
 import Foundation
 
 public struct Streak {
-    static let zero = Self(maximum: 0, current: 0)
+    public static let zero = Self(maximum: 0, current: 0)
     
     public let maximum: Int
     public let current: Int
