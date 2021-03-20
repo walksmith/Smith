@@ -11,7 +11,7 @@ final class StreakTests: XCTestCase {
     }
     
     func testEmpty() {
-        XCTAssertNotNil(archive.streak)
+        XCTAssertNotNil(archive.calendar.streak)
         XCTAssertNotNil(archive.calendar)
     }
     
@@ -37,13 +37,13 @@ final class StreakTests: XCTestCase {
             .init(date: daysAgo5, duration: 1),
             .init(date: daysAgo3, duration: 1)]
         
-        XCTAssertEqual(2, archive.streak.maximum)
-        XCTAssertEqual(0, archive.streak.current)
+        XCTAssertEqual(2, archive.calendar.streak.maximum)
+        XCTAssertEqual(0, archive.calendar.streak.current)
         
         archive.walks.append(.init(date: Calendar.current.date(byAdding: .day, value: -1, to: .init())!, duration: 1))
         
-        XCTAssertEqual(2, archive.streak.maximum)
-        XCTAssertEqual(1, archive.streak.current)
+        XCTAssertEqual(2, archive.calendar.streak.maximum)
+        XCTAssertEqual(1, archive.calendar.streak.current)
     }
     
     func testCalendar() {

@@ -18,12 +18,6 @@ public struct Archive: Comparable, Archivable {
         }
     }
     
-    public var streak: Streak {
-        walks.isEmpty ? .zero : calendar.hits.reduce(Streak.zero) {
-            $1 ? $0.hit : $0.miss
-        }
-    }
-    
     public var calendar: [Year] {
         walks.dates { dates, interval in
             interval.years { year, interval in
