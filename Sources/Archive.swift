@@ -19,15 +19,7 @@ public struct Archive: Comparable, Archivable {
     }
     
     public var streak: Streak {
-        guard !walks.isEmpty else { return .zero }
-        
-        var hits = calendar.flatMap(\.months).flatMap(\.days).flatMap { $0 }.map(\.hit)
-        hits.removeLast(Calendar.current.component(.day,
-                                                   from: Calendar.current.date(
-                                                    byAdding: .day, value: -1,
-                                                    to: Calendar.current.dateInterval(of: .month, for: .init())!.end)!)
-                               - Calendar.current.component(.day, from: .init()))
-        return hits.reduce(Streak.zero) {
+        walks.isEmpty ? .zero : calendar.hits.reduce(Streak.zero) {
             $1 ? $0.hit : $0.miss
         }
     }

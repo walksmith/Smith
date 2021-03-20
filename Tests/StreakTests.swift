@@ -20,7 +20,7 @@ final class StreakTests: XCTestCase {
         let daysAgo7_5 = Calendar.current.date(byAdding: .hour, value: -12, to: Calendar.current.date(byAdding: .day, value: -7, to: .init())!)!
         let daysAgo7 = Calendar.current.date(byAdding: .day, value: -7, to: .init())!
         let daysAgo5 = Calendar.current.date(byAdding: .day, value: -5, to: .init())!
-        let daysAgo2 = Calendar.current.date(byAdding: .day, value: -2, to: .init())!
+        let daysAgo3 = Calendar.current.date(byAdding: .day, value: -3, to: .init())!
         
         archive.walks = [
             .init(date: daysAgo12, duration: 1),
@@ -34,12 +34,12 @@ final class StreakTests: XCTestCase {
             .init(date: daysAgo5, duration: 1),
             .init(date: daysAgo5, duration: 1),
             .init(date: daysAgo5, duration: 1),
-            .init(date: daysAgo2, duration: 1)]
+            .init(date: daysAgo3, duration: 1)]
         
         XCTAssertEqual(2, archive.streak.maximum)
         XCTAssertEqual(0, archive.streak.current)
         
-        archive.walks.append(.init(date: Calendar.current.date(byAdding: .hour, value: -1, to: .init())!, duration: 1))
+        archive.walks.append(.init(date: Calendar.current.date(byAdding: .day, value: -1, to: .init())!, duration: 1))
         
         XCTAssertEqual(2, archive.streak.maximum)
         XCTAssertEqual(1, archive.streak.current)
