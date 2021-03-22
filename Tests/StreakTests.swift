@@ -44,6 +44,11 @@ final class StreakTests: XCTestCase {
         
         XCTAssertEqual(2, archive.calendar.streak.maximum)
         XCTAssertEqual(1, archive.calendar.streak.current)
+        
+        archive.walks.append(.init(date: .init(), duration: 1))
+        
+        XCTAssertEqual(2, archive.calendar.streak.maximum)
+        XCTAssertEqual(2, archive.calendar.streak.current)
     }
     
     func testCalendar() {

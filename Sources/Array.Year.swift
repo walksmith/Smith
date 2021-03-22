@@ -1,4 +1,5 @@
 import Foundation
+import Archivable
 
 extension Array where Element == Year {
     public var streak: Streak {
@@ -8,7 +9,9 @@ extension Array where Element == Year {
                 .flatMap(\.days)
                 .flatMap { $0 }
                 .map(\.hit)
-                .dropLast(Calendar.current.daysLeftMonth + 1).reduce(.zero) {
+                .dropLast(Calendar.current.daysLeftMonth)
+                .dropLastIfFalse
+                .reduce(.zero) {
                     $1 ? $0.hit : $0.miss
                 }
     }
