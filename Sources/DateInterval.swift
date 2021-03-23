@@ -28,7 +28,7 @@ extension DateInterval {
             .map {
                 calendar.dateInterval(
                     of: .weekOfMonth,
-                    for: calendar.date(from: .init(year: year, month: month, weekday: 1, weekOfMonth: $0))!)!
+                    for: calendar.date(from: .init(year: year, month: month, weekday: calendar.firstWeekday, weekOfMonth: $0))!)!
                     .intersection(with: self)!
             }
             .map {
