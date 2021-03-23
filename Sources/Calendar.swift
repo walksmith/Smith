@@ -10,4 +10,10 @@ extension Calendar {
             $0 < firstWeekday ? 7 - firstWeekday + $0 : $0 - firstWeekday
         } (component(.weekday, from: date(from: .init(year: year, month: month, day: day))!))
     }
+    
+    public func trailingWeekdays(year: Int, month: Int, day: Int) -> Int {
+        {
+            $0 < firstWeekday ? 0 : 6 + firstWeekday - $0
+        } (component(.weekday, from: date(from: .init(year: year, month: month, day: day))!))
+    }
 }

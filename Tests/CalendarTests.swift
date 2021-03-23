@@ -25,4 +25,28 @@ final class CalendarTests: XCTestCase {
         XCTAssertEqual(6, calendar.leadingWeekdays(year: 2021, month: 8, day: 3))
         XCTAssertEqual(0, calendar.leadingWeekdays(year: 2021, month: 8, day: 4))
     }
+    
+    func testTrailingWeekdays() {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 1
+        XCTAssertEqual(3, calendar.trailingWeekdays(year: 2021, month: 8, day: 4))
+        XCTAssertEqual(2, calendar.trailingWeekdays(year: 2021, month: 8, day: 5))
+        XCTAssertEqual(1, calendar.trailingWeekdays(year: 2021, month: 8, day: 6))
+        XCTAssertEqual(0, calendar.trailingWeekdays(year: 2021, month: 8, day: 7))
+        calendar.firstWeekday = 2
+        XCTAssertEqual(4, calendar.trailingWeekdays(year: 2021, month: 8, day: 4))
+        XCTAssertEqual(3, calendar.trailingWeekdays(year: 2021, month: 8, day: 5))
+        XCTAssertEqual(2, calendar.trailingWeekdays(year: 2021, month: 8, day: 6))
+        XCTAssertEqual(1, calendar.trailingWeekdays(year: 2021, month: 8, day: 7))
+        calendar.firstWeekday = 3
+        XCTAssertEqual(5, calendar.trailingWeekdays(year: 2021, month: 8, day: 4))
+        XCTAssertEqual(4, calendar.trailingWeekdays(year: 2021, month: 8, day: 5))
+        XCTAssertEqual(3, calendar.trailingWeekdays(year: 2021, month: 8, day: 6))
+        XCTAssertEqual(2, calendar.trailingWeekdays(year: 2021, month: 8, day: 7))
+        calendar.firstWeekday = 4
+        XCTAssertEqual(6, calendar.trailingWeekdays(year: 2021, month: 8, day: 4))
+        XCTAssertEqual(5, calendar.trailingWeekdays(year: 2021, month: 8, day: 5))
+        XCTAssertEqual(4, calendar.trailingWeekdays(year: 2021, month: 8, day: 6))
+        XCTAssertEqual(3, calendar.trailingWeekdays(year: 2021, month: 8, day: 7))
+    }
 }
