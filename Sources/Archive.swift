@@ -18,18 +18,6 @@ public struct Archive: Comparable, Archivable {
         }
     }
     
-    public var calendar: [Year] {
-        walks.dates { dates, interval in
-            interval.years { year, interval in
-                .init(value: year, months: interval.months(year: year) { month, interval in
-                    .init(value: month, days: interval.days(year: year, month: month) { day, date in
-                        .init(value: day, hit: dates.hits(date))
-                    })
-                })
-            }
-        } ?? []
-    }
-    
     public var list: [Walk.Listed] {
         walks
             .map(\.duration)
@@ -42,6 +30,22 @@ public struct Archive: Comparable, Archivable {
                     .init(date: $0.date, duration: $0.duration, percent: $0.duration / duration)
                 }
             }?.reversed() ?? []
+    }
+    
+    public var calendar: [Year] {
+        walks.dates { dates, interval in
+            interval.years { year, interval in
+                .init(value: year, months: interval.months(year: year) { month, interval in
+                    .init(value: month, days: interval.days(year: year, month: month) { day, date in
+                        .init(value: day, hit: dates.hits(date))
+                    })
+                })
+            }
+        } ?? []
+    }
+    
+    public var steps: Int {
+        walks.map(\.steps).max() ?? 0
     }
     
     public var data: Data {
