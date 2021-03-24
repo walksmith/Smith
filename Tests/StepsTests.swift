@@ -11,15 +11,16 @@ final class StepsTests: XCTestCase {
     }
     
     func testEmpty() {
-        XCTAssertEqual(0, archive.steps)
+        XCTAssertEqual(0, archive.maxSteps)
+        XCTAssertTrue(archive.steps.isEmpty)
     }
     
     func testMax() {
         archive.walks.append(.init(date: .init(), steps: 1))
-        XCTAssertEqual(1, archive.steps)
+        XCTAssertEqual(1, archive.maxSteps)
         archive.walks.append(.init(date: .init(), steps: 5))
-        XCTAssertEqual(5, archive.steps)
+        XCTAssertEqual(5, archive.maxSteps)
         archive.walks.append(.init(date: .init(), steps: 3))
-        XCTAssertEqual(5, archive.steps)
+        XCTAssertEqual(5, archive.maxSteps)
     }
 }

@@ -14,7 +14,7 @@ public struct Archive: Comparable, Archivable {
     
     public var last: DateInterval? {
         walks.last.map {
-            DateInterval(start: $0.date, duration: $0.duration)
+            .init(start: $0.date, duration: $0.duration)
         }
     }
     
@@ -44,8 +44,12 @@ public struct Archive: Comparable, Archivable {
         } ?? []
     }
     
-    public var steps: Int {
+    public var maxSteps: Int {
         walks.map(\.steps).max() ?? 0
+    }
+    
+    public var steps: [Double] {
+        []
     }
     
     public var data: Data {
