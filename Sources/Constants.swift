@@ -13,6 +13,6 @@ struct Constants {
     }
     
     struct steps {
-        static let max = 10
+        static let max = 20
     }
 }
