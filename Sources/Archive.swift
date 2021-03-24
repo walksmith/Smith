@@ -49,7 +49,13 @@ public struct Archive: Comparable, Archivable {
     }
     
     public var steps: [Double] {
-        []
+        {
+            { list, max in
+                list.map {
+                    .init($0) / max
+                }
+            } ($0, .init(max($0.max() ?? 1, 1)))
+        } (walks.suffix(Constants.steps.max).map(\.steps))
     }
     
     public var data: Data {

@@ -11,4 +11,8 @@ struct Constants {
             static let fallback = 1
         }
     }
+    
+    struct steps {
+        static let max = 10
+    }
 }
