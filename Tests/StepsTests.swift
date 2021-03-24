@@ -12,8 +12,7 @@ final class StepsTests: XCTestCase {
     
     func testEmpty() {
         XCTAssertEqual(0, archive.maxSteps)
-        XCTAssertTrue(archive.steps.values.isEmpty)
-        XCTAssertEqual(0, archive.steps.max)
+        XCTAssertEqual(.zero, archive.steps)
     }
     
     func testMax() {
